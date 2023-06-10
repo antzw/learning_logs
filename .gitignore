@@ -1,4 +1,6 @@
 ll_env/
+ll_env1/
+ll_env2/
 __pycache__/
 *.sqlite3
 where_env.txt
