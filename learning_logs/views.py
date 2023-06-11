@@ -13,7 +13,7 @@ def index(request):
 @login_required
 def topics(request):
     """显示所有的主题"""
-    topics=Topic.objects.order_by('date_added')
+    topics=Topic.objects.filter(owner=request.user).order_by('date_added')
     context={'topics':topics}
     return render(request, 'learning_logs/topics.html', context)
 
@@ -63,7 +63,8 @@ def new_entry(request, topic_id):
     # 显示空表单或指出表单数据无效。
     context ={'topic':topic, 'form':form}
     return render(request, 'learning_logs/new_entry.html',context)
-    
+
+@login_required    
 def edit_entry(request, entry_id):
     """编辑既有条目"""
     entry = Entry.objects.get(id=entry_id)
