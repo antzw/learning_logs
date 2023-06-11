@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
@@ -8,6 +10,7 @@ def index(request):
     """学习笔记的主页"""
     return render(request,'learning_logs/index.html')
 
+@login_required
 def topics(request):
     """显示所有的主题"""
     topics=Topic.objects.order_by('date_added')
@@ -20,6 +23,8 @@ def topic(request, topic_id):
     entries = topic.entry_set.order_by('-date_added')
     context = {'topic':topic, 'entries':entries}
     return render(request,'learning_logs/topic.html',context)
+
+
 
 def new_topic(request):
     """添加新主题"""
@@ -36,6 +41,7 @@ def new_topic(request):
     # 显示空表单或指出表单数据无效
     context = {'form': form}
     return render(request,'learning_logs/new_topic.html',context)
+
 
 def new_entry(request, topic_id):
     """在特定主题中添加新条目"""
@@ -57,3 +63,4 @@ def new_entry(request, topic_id):
     context ={'topic':topic, 'form':form}
     return render(request, 'learning_logs/new_entry.html',context)
     
+
